@@ -25,7 +25,7 @@ export class AuthController {
   async login(@Request() req, @Res({passthrough:true}) response:Response,) {
 
       const user = await this.userService.findOne(req.user._doc.email)
-      // console.log("this is user id" + {user})
+      // console.log("toto je user id " + {user})
       const jwt =   this.jwtService.sign({user : user})
       // response.cookie('USERID', user._id)
       // req.cookies['cookieKey']
@@ -57,7 +57,7 @@ export class AuthController {
       
       groupDto.user = req.user.id
       groupDto.userName = req.user.name
-      // console.log(req.user.name + "THIS IS AUTH CONTROLLER !!!!!")
+      // console.log(req.user.id + "TOTO JE AUTH CONTROLLER !!!!!")
       return await this.groupService.createGroup(groupDto);
   }
   catch (error) { 
@@ -76,12 +76,14 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('group/findusergroups')
+  @Get('user/groups')
   async findUserById(@Request() req) {
       try{
       // const userId= req.cookies['USERID']
       // console.log("volam findAllByUserId metodu v group controlery / userid =  " + userId)
+      
       return await this.groupService.findAllByUserId(req.user.id);
+      return "resopnse picee"
       }
 
       catch (error) { 
