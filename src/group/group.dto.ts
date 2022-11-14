@@ -24,19 +24,19 @@ export class GroupDto {
     
     createdAt: Date ;
 
-    user: User;
+    createdBy: User;
 
     userName: String;
 
 
-  
 
 
 
     constructor(title: string, instrument: string, description: string, contact: string,
         createdAt: Date,
-        user: User,
-        userName: String
+        createdBy: User,
+        userName: String,
+   
 
         ) {
         this.title = title;
@@ -44,8 +44,9 @@ export class GroupDto {
         this.description = description;
         this.contact = contact;
         this.createdAt = createdAt;
-        this.user = user;
+        this.createdBy = createdBy;
         this.userName = userName;
+        
 
     }
 }

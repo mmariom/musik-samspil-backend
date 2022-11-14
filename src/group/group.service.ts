@@ -19,7 +19,7 @@ export class GroupService {
     
     async createGroup(createGroupDto: GroupDto ): Promise<Group> {
         //maybe check if group title already exists ?
-        if(!(createGroupDto.user)){
+        if(!(createGroupDto.createdBy)){
             throw new Error("You have to be logged in to assing the group");
         }
             // console.log(JSON.stringify(createGroupDto))
@@ -68,4 +68,24 @@ export class GroupService {
         
         return await this.groupModel.find({user : userId});
     }
+
+
+    async assignUserToGroup(loggedUser:User , groupId:any , ): Promise<any> {
+
+        // find group by id 
+        const group =  await this.groupModel.findById(groupId)
+        
+        
+        //check if id already exist in  nested array [assignedUsers ]
+        // group.assignedUsers.find
+
+    
+
+        //adding user to assignedUsers 
+        return  await  group.updateOne( { $push: { assignedUsers: loggedUser} })
+   
+  }
+
+
+
 }

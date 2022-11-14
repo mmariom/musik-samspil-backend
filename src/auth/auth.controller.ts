@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UseGuards,Request,HttpException, HttpStatus, Res , Req, Session, Body} from "@nestjs/common";
+import { Controller, Get, Post, UseGuards,Request,HttpException, HttpStatus, Res , Req, Session, Body, Param} from "@nestjs/common";
 import { UserService } from "src/user/user.service";
 import { AuthService } from "./auth.service";
 import { JwtAuthGuard } from "./utils/jwt-auth.guard";
@@ -55,7 +55,7 @@ export class AuthController {
     try{
 
       
-      groupDto.user = req.user.id
+      groupDto.createdBy = req.user.id
       groupDto.userName = req.user.name
       // console.log(req.user.id + "TOTO JE AUTH CONTROLLER !!!!!")
       return await this.groupService.createGroup(groupDto);
@@ -99,6 +99,23 @@ export class AuthController {
         }
 
   }
+
+
+  @UseGuards(JwtAuthGuard)
+  @Get('assignUserToGroup/:groupid')
+  async assignUserToGroup(@Request() req,@Param('groupid') groupId: string) {
+    
+
+      // Get current user id 
+      const loggedUser = req.user;
+      return await this.groupService.assignUserToGroup(loggedUser,groupId)
+      // return await this.groupService.findAllByUserId(req.user.id);
+
+
+
+  }
+  
+
   
 
 

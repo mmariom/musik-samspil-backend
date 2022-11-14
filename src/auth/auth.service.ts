@@ -5,6 +5,7 @@ import { comparePassword } from 'src/utils/bcrypt';
 import { JwtStrategy } from './utils/jwt.strategy';
 import { jwtConstants } from './utils/constants';
 import { User } from 'src/user/user.schema';
+import { Group } from 'src/group/group.schema';
 
 
 @Injectable()
@@ -38,4 +39,8 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
+
+
+
+
 }
