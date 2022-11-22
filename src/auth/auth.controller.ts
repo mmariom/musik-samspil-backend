@@ -81,9 +81,12 @@ export class AuthController {
       try{
       // const userId= req.cookies['USERID']
       // console.log("volam findAllByUserId metodu v group controlery / userid =  " + userId)
-      
+      console.log("kokot mail ")
+      console.log(req.user.id)
       return await this.groupService.findAllByUserId(req.user.id);
-      return "resopnse picee"
+      // return await this.groupService.findAllByUserId(req.user.name);
+
+    
       }
 
       catch (error) { 

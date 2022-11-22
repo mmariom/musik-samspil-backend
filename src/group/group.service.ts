@@ -56,7 +56,10 @@ export class GroupService {
     async findAllByUserId(userId:any): Promise<Group[]> {
 
         //check if have some groups 
-        const haveGroups = await this.groupModel.find({user : userId});
+        // console.log("Group service")
+        // console.log(userId);
+        const haveGroups = await this.groupModel.find({createdBy : userId});
+        console.log(haveGroups);
         if( haveGroups.length < 1){
             throw new Error("You dont have any groups ! ");
         }
@@ -66,7 +69,7 @@ export class GroupService {
         //     throw new Error("You dont have any groups ! ");
         // }
         
-        return await this.groupModel.find({user : userId});
+        return await this.groupModel.find({createdBy : userId});
     }
 
 
@@ -75,6 +78,27 @@ export class GroupService {
         // find group by id 
         const group =  await this.groupModel.findById(groupId)
         
+        console.log("loggeduersssssssss")
+
+        console.log(group.assignedUsers)
+
+        let allUsers  = group.assignedUsers;
+
+        // for (let index = 0; index < allUsers.length; index++) {
+
+        //     const element = allUsers[index];
+        //     console.log(element.id);
+        //     if(this.groupModel.find({assignedUsers: {$elemMatch: {element.id}}})){
+        //         throw new Error("User is already in the group!");
+        //     }
+            
+            
+        // }
+    
+        // if(this.groupModel.find({assignedUsers: {$elemMatch: {id:loggedUser.id}}})){
+        //     throw new Error("User is already in the group!");
+        // }
+        
         
         //check if id already exist in  nested array [assignedUsers ]
         // group.assignedUsers.find
@@ -82,7 +106,7 @@ export class GroupService {
     
 
         //adding user to assignedUsers 
-        return  await  group.updateOne( { $push: { assignedUsers: loggedUser} })
+        return  await  group.updateOne( { $addToSet: { assignedUsers: loggedUser} })
    
   }
 
