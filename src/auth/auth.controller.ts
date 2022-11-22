@@ -108,15 +108,51 @@ export class AuthController {
   @Get('assignUserToGroup/:groupid')
   async assignUserToGroup(@Request() req,@Param('groupid') groupId: string) {
     
-
       // Get current user id 
       const loggedUser = req.user;
       return await this.groupService.assignUserToGroup(loggedUser,groupId)
       // return await this.groupService.findAllByUserId(req.user.id);
 
 
+  }
+
+
+  // @UseGuards(JwtAuthGuard)
+  // @Get('/findUsersJoinedGroups')
+  // async findUsersJoinedGroups(@Request() req,@Param('groupid') groupId: string) {
+    
+  //     // Get current user id 
+  //     const loggedUser = req.user;
+  //     return await this.groupService.findUsersJoinedGroups(loggedUser.id)
+   
+
+
+  // }
+
+    @UseGuards(JwtAuthGuard)
+  @Get('user/userJoinedGroups')
+  async findUsersJoinedGroups(@Request() req) {
+      try{
+   
+     
+      return await this.groupService.findUsersJoinedGroups(req.user.id);
+    
+      }
+
+      catch (error) { 
+     
+          throw new HttpException({
+          status: HttpStatus.FORBIDDEN,
+          message: [error.message],
+        }, HttpStatus.FORBIDDEN, {
+          cause: error
+        });
+        
+        }
 
   }
+
+  
   
 
   

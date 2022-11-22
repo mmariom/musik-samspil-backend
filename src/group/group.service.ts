@@ -110,6 +110,15 @@ export class GroupService {
    
   }
 
+    async findUsersJoinedGroups(userId:any): Promise<Group[]> {
+            // console.log("findUsersJoinedGroups executing")
+            // console.log(this.groupModel.find({assignedUsers : userId}));
+                // return await this.groupModel.find({assignedUsers : userId});
+                return await this.groupModel.find({assignedUsers: {$elemMatch: {id:userId}}});
+                // {assignedUsers: {$elemMatch: {id:loggedUser.id}}}
+    }
+
+
 
 
 }
