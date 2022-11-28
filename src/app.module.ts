@@ -6,10 +6,13 @@ import * as dotenv from 'dotenv'
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { GroupModule } from './group/group.module';
+import { config } from 'dotenv';
 
+config()
+console.log(process.env.password)
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://rootuser:rootpass@localhost:27017/musik_samspil?authSource=admin'),
+  imports: [MongooseModule.forRoot(`mongodb+srv://ion123:Ciocaion221998@cluster0.ks6sfje.mongodb.net/Samspil-backend`),
   UserModule,
   GroupModule,
   AuthModule  
@@ -18,3 +21,4 @@ import { GroupModule } from './group/group.module';
   providers: [AppService],
 })
 export class AppModule {}
+
