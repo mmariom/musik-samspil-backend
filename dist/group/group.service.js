@@ -43,15 +43,22 @@ let GroupService = class GroupService {
         return group;
     }
     async findAllByUserId(userId) {
-        const haveGroups = await this.groupModel.find({ user: userId });
+        const haveGroups = await this.groupModel.find({ createdBy: userId });
+        console.log(haveGroups);
         if (haveGroups.length < 1) {
             throw new Error("You dont have any groups ! ");
         }
-        return await this.groupModel.find({ user: userId });
+        return await this.groupModel.find({ createdBy: userId });
     }
     async assignUserToGroup(loggedUser, groupId) {
         const group = await this.groupModel.findById(groupId);
-        return await group.updateOne({ $push: { assignedUsers: loggedUser } });
+        console.log("loggeduersssssssss");
+        console.log(group.assignedUsers);
+        let allUsers = group.assignedUsers;
+        return await group.updateOne({ $addToSet: { assignedUsers: loggedUser } });
+    }
+    async findUsersJoinedGroups(userId) {
+        return await this.groupModel.find({ assignedUsers: { $elemMatch: { id: userId } } });
     }
 };
 GroupService = __decorate([

@@ -23,12 +23,19 @@ export class UserService {
       throw new Error('Email already existst');
     }
     //does not exist
-    const encryptedPassword = await encodePassword(createUserDto.password);
+    const encryptedPassword = encodePassword(createUserDto.password);
     // console.log(encryptedPassword);
     createUserDto.password = encryptedPassword;
     const createdUser = new this.userModel(createUserDto);
     console.log("this is  created user from userservuice "+ JSON.stringify(createdUser));
     return createdUser.save();
+  }
+
+  async updatePassword({email, password}): Promise<User> {
+    const user = await this.userModel.findOne({email: email});
+    const encryptedPassword = encodePassword(password)
+    user.password = encryptedPassword
+    return user.save()
   }
 
 

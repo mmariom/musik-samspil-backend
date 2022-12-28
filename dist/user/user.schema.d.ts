@@ -3,7 +3,7 @@ import { Group } from 'src/group/group.schema';
 import * as mongoose from 'mongoose';
 export declare type UserDocument = HydratedDocument<User>;
 export declare class User {
-    _id: Types.ObjectId;
+    id: Types.ObjectId;
     name: string;
     email: string;
     password: string;

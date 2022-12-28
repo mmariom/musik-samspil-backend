@@ -58,8 +58,9 @@ let AuthController = class AuthController {
     }
     async findUserById(req) {
         try {
+            console.log("kokot mail ");
+            console.log(req.user.id);
             return await this.groupService.findAllByUserId(req.user.id);
-            return "resopnse picee";
         }
         catch (error) {
             console.log("controller catch block ");
@@ -74,6 +75,19 @@ let AuthController = class AuthController {
     async assignUserToGroup(req, groupId) {
         const loggedUser = req.user;
         return await this.groupService.assignUserToGroup(loggedUser, groupId);
+    }
+    async findUsersJoinedGroups(req) {
+        try {
+            return await this.groupService.findUsersJoinedGroups(req.user.id);
+        }
+        catch (error) {
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.FORBIDDEN,
+                message: [error.message],
+            }, common_1.HttpStatus.FORBIDDEN, {
+                cause: error
+            });
+        }
     }
 };
 __decorate([
@@ -119,6 +133,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "assignUserToGroup", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('user/userJoinedGroups'),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "findUsersJoinedGroups", null);
 AuthController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [auth_service_1.AuthService,

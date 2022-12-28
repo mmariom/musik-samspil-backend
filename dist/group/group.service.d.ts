@@ -12,4 +12,5 @@ export declare class GroupService {
     finbyGroupId(groupId: any): Promise<Group>;
     findAllByUserId(userId: any): Promise<Group[]>;
     assignUserToGroup(loggedUser: User, groupId: any): Promise<any>;
+    findUsersJoinedGroups(userId: any): Promise<Group[]>;
 }

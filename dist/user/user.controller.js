@@ -16,9 +16,13 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_dto_1 = require("./user.dto");
 const user_service_1 = require("./user.service");
+const token_service_1 = require("./token.service");
+const crypto_1 = require("crypto");
+const sendEmail_1 = require("../utils/sendEmail");
 let UserController = class UserController {
-    constructor(userService) {
+    constructor(userService, tokenService) {
         this.userService = userService;
+        this.tokenService = tokenService;
     }
     findAll() {
         return 'This action returns all cats';
@@ -39,6 +43,36 @@ let UserController = class UserController {
     }
     findUserById(id) {
         return this.userService.findOne(id);
+    }
+    async generateResetEmail(email) {
+        const user = await this.userService.findOne(email);
+        if (!user)
+            throw new common_1.HttpException('No user with this email', common_1.HttpStatus.BAD_REQUEST);
+        let token = await this.tokenService.findOne({ email: email });
+        if (!token) {
+            token = await this.tokenService.createToken({
+                userEmail: email,
+                tokenString: (0, crypto_1.randomBytes)(32).toString("hex"),
+            });
+        }
+        await (0, sendEmail_1.sendResetEmail)({ email, token });
+    }
+    async resetPassword(email, tokenString, userPassword) {
+        try {
+            console.log(email, tokenString);
+            const token = await this.tokenService.findOne({
+                email: email,
+                token: tokenString,
+            });
+            if (!token)
+                throw new common_1.HttpException("Invalid link or expired", common_1.HttpStatus.BAD_REQUEST);
+            await this.userService.updatePassword({ email: email, password: userPassword.password });
+            await this.tokenService.deleteToken(tokenString);
+        }
+        catch (e) {
+            console.log(e);
+            throw e;
+        }
     }
 };
 __decorate([
@@ -61,9 +95,25 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findUserById", null);
+__decorate([
+    (0, common_1.Post)('/generateResetEmail/:email'),
+    __param(0, (0, common_1.Param)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "generateResetEmail", null);
+__decorate([
+    (0, common_1.Post)('reset/:email/:token'),
+    __param(0, (0, common_1.Param)('email')),
+    __param(1, (0, common_1.Param)('token')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "resetPassword", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    __metadata("design:paramtypes", [user_service_1.UserService, token_service_1.TokenService])
 ], UserController);
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map

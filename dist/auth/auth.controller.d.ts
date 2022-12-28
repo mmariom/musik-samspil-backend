@@ -17,6 +17,7 @@ export declare class AuthController {
     }>;
     getProfile(req: any): Promise<import("../user/user.schema").User>;
     createGroup(req: any, groupDto: GroupDto): Promise<import("../group/group.schema").Group>;
-    findUserById(req: any): Promise<import("../group/group.schema").Group[] | "resopnse picee">;
+    findUserById(req: any): Promise<import("../group/group.schema").Group[]>;
     assignUserToGroup(req: any, groupId: string): Promise<any>;
+    findUsersJoinedGroups(req: any): Promise<import("../group/group.schema").Group[]>;
 }

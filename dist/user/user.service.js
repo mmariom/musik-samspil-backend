@@ -28,11 +28,17 @@ let UserService = class UserService {
             console.log("error v userservice if(user)");
             throw new Error('Email already existst');
         }
-        const encryptedPassword = await (0, bcrypt_1.encodePassword)(createUserDto.password);
+        const encryptedPassword = (0, bcrypt_1.encodePassword)(createUserDto.password);
         createUserDto.password = encryptedPassword;
         const createdUser = new this.userModel(createUserDto);
         console.log("this is  created user from userservuice " + JSON.stringify(createdUser));
         return createdUser.save();
+    }
+    async updatePassword({ email, password }) {
+        const user = await this.userModel.findOne({ email: email });
+        const encryptedPassword = (0, bcrypt_1.encodePassword)(password);
+        user.password = encryptedPassword;
+        return user.save();
     }
     async findAll() {
         return this.userModel.find().exec();
