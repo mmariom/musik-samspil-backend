@@ -9,7 +9,9 @@ import { GroupModule } from './group/group.module';
 
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://rootuser:rootpass@localhost:27017/musik_samspil?authSource=admin'),
+  // imports: [MongooseModule.forRoot('mongodb://rootuser:rootpass@localhost:27017/musik_samspil?authSource=admin'),
+  imports: [MongooseModule.forRoot('mongodb://3.72.38.210:27017/musik_samspil'),
+
   UserModule,
   GroupModule,
   AuthModule  
