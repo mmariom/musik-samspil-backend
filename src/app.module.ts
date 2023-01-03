@@ -12,7 +12,7 @@ config()
 console.log(process.env.password)
 
 @Module({
-  // imports: [MongooseModule.forRoot('mongodb://rootuser:rootpass@localhost:27017/musik_samspil?authSource=admin'),
+  // comment imports: [MongooseModule.forRoot('mongodb://rootuser:rootpass@localhost:27017/musik_samspil?authSource=admin'),
   imports: [MongooseModule.forRoot('mongodb://3.75.34.96:27017/musik_samspil'),
 
   UserModule,
