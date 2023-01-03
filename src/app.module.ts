@@ -6,7 +6,10 @@ import * as dotenv from 'dotenv'
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { GroupModule } from './group/group.module';
+import { config } from 'dotenv';
 
+config()
+console.log(process.env.password)
 
 @Module({
   // imports: [MongooseModule.forRoot('mongodb://rootuser:rootpass@localhost:27017/musik_samspil?authSource=admin'),
