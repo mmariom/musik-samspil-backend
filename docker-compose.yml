@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  backend:
+    image: mmatejovic/nestjs-school:latest
+    ports:
+      - 3030:3030
+    depends_on:
+      - database
+    environment:
+      DATABASE_URL: mongodb://rootuser:rootpass@database:27017/musik_samspil?authSource=admin
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 30s
+
+  frontend:
+    image: mmatejovic/reactfe-school:latest
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 20s
+        max_attempts: 3
+        window: 50s
+    ports:
+      - 80:80
+
+
+  database:
+    image: mongo:4.4
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rootuser
+      MONGO_INITDB_ROOT_PASSWORD: rootpass
+    volumes:
+      - mongo-db-data:/data/db
+    ports:
+      - 27017:27017
+
+
+volumes:
+  mongo-db-data:
+
+

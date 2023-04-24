@@ -78,7 +78,6 @@ export class GroupService {
         // find group by id 
         const group =  await this.groupModel.findById(groupId)
         
-        console.log("loggeduersssssssss")
 
         console.log(group.assignedUsers)
 
