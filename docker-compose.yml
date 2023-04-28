@@ -7,6 +7,8 @@ services:
       - 3030:3030
     depends_on:
       - database
+    networks:
+      - cool-network
     environment:
       DATABASE_URL: mongodb://rootuser:rootpass@database:27017/musik_samspil?authSource=admin
     deploy:
@@ -34,6 +36,8 @@ services:
           memory: 128M
     ports:
       - 80:80
+    networks:
+      - cool-network
 
   database:
     image: mongo:4.4
@@ -44,6 +48,13 @@ services:
       - mongo-db-data:/data/db
     ports:
       - 27017:27017
+    networks:
+      - cool-network
+
+  
 
 volumes:
   mongo-db-data:
+
+networks:
+  cool-network:
