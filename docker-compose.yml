@@ -36,6 +36,8 @@ services:
           memory: 128M
     ports:
       - 80:80
+    environment:
+      REACT_APP_BACKEND_URL: http://backend:3030
     networks:
       - cool-network
 
